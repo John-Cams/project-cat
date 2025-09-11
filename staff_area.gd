@@ -1,16 +1,19 @@
 extends Area2D
 
 signal entered
+signal completeMiss
 
 #func _on_body_entered(body) -> void:
 	#entered.emit()
 	#print("hi")
 
 var temp = 0
+var notesToExpect = [-1,-1,-1,-1,-1,-1,-1]
+var amountMissed = 0
 
 func _ready():
 	set_monitoring(true)
-	# Connect the signal that tells you which shape of the Area2D was hit
+	# Connect the signal that	 tells you which shape of the Area2D was hit
 	#self.body_shape_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node) -> void:
@@ -23,8 +26,28 @@ func _on_body_entered(body: Node) -> void:
 
 func _on_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int):
 	
-	Global.listOfNotes.append(body_shape_index)
+	if (!(local_shape_index==7)):
+		notesToExpect[local_shape_index] += 1	
+		temp += 1
+		print(notesToExpect)
+	else:
+		amountMissed += 1
+		if amountMissed == 4:
+			amountMissed = 0
+			completeMiss.emit()
+		
+
+
+func _on_main_note_hit() -> void:
+	print("Hello:", Global.currentNote)
 	
+
+func _on_main_shuffle_sig() -> void:
+	notesToExpect = [-1,-1,-1,-1,-1,-1,-1]
 	
-	temp += 1
-	print(body_shape_index, local_shape_index)
+func unique_list(list):
+	var unique = []
+	for i in list:
+		if !(i in list):
+			unique.append(i)
+	

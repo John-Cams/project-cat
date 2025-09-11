@@ -1,6 +1,7 @@
 extends Node
 
 signal noteHit
+signal shuffleSig
 
 @onready
 var types = [preload("res://assets//Shape.png"),preload("res://assets//Color.png")]
@@ -9,12 +10,18 @@ var inputs = ["redHeart","yellowCircle","greenDiamond","blueTriangle"]
 var currentShape = 0
 var isShape = true
 #TODO Change later
-var xStaffMin = 300
+var xStaffMin = 400
 var xStaffMax = 1700
 var shapes = [0,0,0,0]
 var activeShapes = []
+var inputsOn = false
+
+func _process(delta: float) -> void:
+	print(inputsOn)
 
 func shuffle() :
+	inputsOn = false
+	shuffleSig.emit()
 	requiredInputs = [randi_range(0,3),randi_range(0,3),randi_range(0,3),randi_range(0,3)]
 	isShape = (randi_range(0,1)==0)
 	$Indicator.texture = types[int(!isShape)]
@@ -34,27 +41,32 @@ func shuffle() :
 	print(shapes)
 	
 func _input(event):
-	var requiredAction = inputs[requiredInputs[currentShape]]	
-	if event.is_action_pressed(requiredAction):
-		nextNote()
-	else:
-		var is_valid_input = false
-		for input_action in inputs:
-			if event.is_action_pressed(input_action):
-				is_valid_input = true
-				break 
-		if is_valid_input:
-			print("No")
+	if inputsOn:
+		var requiredAction = inputs[requiredInputs[currentShape]]	
+		if event.is_action_pressed(requiredAction):
+			nextNote()
+		else:
+			var is_valid_input = false
+			for input_action in inputs:
+				if event.is_action_pressed(input_action):
+					is_valid_input = true
+					break 
+			if is_valid_input:
+				print("No")
 
 ## This function is ran whenever a note becomes "uselss"
 ## that is when the note passes the staff bar or is clicked
 func nextNote() :
 	noteHit.emit()
+	activeShapes[currentShape].visible = false
+	activeShapes[currentShape].get_node("NoteCS").disabled = true
+	
 	print("yes" + str(currentShape))
 	if currentShape == 3:
 		shuffle()
 		currentShape = -1
 	currentShape += 1
+	Global.currentNote = currentShape
 			
 func _ready() -> void:
 	shuffle()
@@ -73,8 +85,14 @@ func spawnShapes(shapeList) :
 	for i in activeShapes:
 		i.linear_velocity = Vector2(-300, 0)
 	
+	inputsOn = true	
+	
 
 
 
 func _on_area_2d_entered() -> void:
 	print("hi")
+
+
+func _on_staff_area_complete_miss() -> void:
+	shuffle()

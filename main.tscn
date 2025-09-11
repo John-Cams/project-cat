@@ -1,8 +1,9 @@
-[gd_scene load_steps=29 format=3 uid="uid://bt0wlqj5k2ae8"]
+[gd_scene load_steps=31 format=3 uid="uid://bt0wlqj5k2ae8"]
 
 [ext_resource type="Script" uid="uid://76fuqau8a87i" path="res://main.gd" id="1_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://c60r5udhngma" path="res://assets/Staff.png" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://btt4rot0n4o2k" path="res://assets/Shape.png" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://scarbiq4mwwl" path="res://staff_area.gd" id="2_272bh"]
 [ext_resource type="Texture2D" uid="uid://cd6y6cpnvgtjh" path="res://assets/Notes.png" id="3_lquwl"]
 [ext_resource type="Texture2D" uid="uid://dmrlqmql0dwll" path="res://assets/Frame 2.png" id="6_7mycd"]
 [ext_resource type="FontFile" uid="uid://sb6skutmwufe" path="res://assets/Roboto-Regular.ttf" id="7_272bh"]
@@ -14,6 +15,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5vw27"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_272bh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_efxa6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7mycd"]
 atlas = ExtResource("3_lquwl")
@@ -145,72 +148,54 @@ offset_right = 1600.0
 offset_bottom = 1000.0
 color = Color(0.151276, 0.151276, 0.151276, 1)
 
-[node name="Staff" type="Sprite2D" parent="."]
+[node name="StaffArea" type="Area2D" parent="."]
 position = Vector2(800, 200)
+scale = Vector2(0.25, 1)
+script = ExtResource("2_272bh")
+
+[node name="Staff" type="Sprite2D" parent="StaffArea"]
+scale = Vector2(4, 1)
 texture = ExtResource("1_h2yge")
 
-[node name="Bad1" type="Area2D" parent="."]
-position = Vector2(1050, 600)
-scale = Vector2(0.015625, 1)
-
-[node name="Bad" type="CollisionShape2D" parent="Bad1"]
+[node name="Bad" type="CollisionShape2D" parent="StaffArea"]
 position = Vector2(-1800, 0)
 scale = Vector2(20, 6.5)
 shape = SubResource("RectangleShape2D_4c57u")
 
-[node name="Good1" type="Area2D" parent="."]
-position = Vector2(1000, 400)
-scale = Vector2(0.0625, 1)
-
-[node name="Good" type="CollisionShape2D" parent="Good1"]
-position = Vector2(-2700, 0)
-scale = Vector2(10, 8.3)
-shape = SubResource("RectangleShape2D_kek77")
-
-[node name="Great1" type="Area2D" parent="."]
-position = Vector2(1000, 400)
-scale = Vector2(0.0625, 1)
-
-[node name="Great" type="CollisionShape2D" parent="Great1"]
-position = Vector2(-2250, -0.1)
-scale = Vector2(5, 9.15)
-shape = SubResource("RectangleShape2D_5vw27")
-
-[node name="Perfect" type="Area2D" parent="."]
-position = Vector2(1062.5, 800)
-scale = Vector2(0.00390625, 1)
-
-[node name="Perfect" type="CollisionShape2D" parent="Perfect"]
-position = Vector2(-2400, 0)
-scale = Vector2(10, 10)
-shape = SubResource("RectangleShape2D_272bh")
-
-[node name="Great2" type="Area2D" parent="."]
-position = Vector2(1050, 600)
-scale = Vector2(0.015625, 1)
-
-[node name="Great2" type="CollisionShape2D" parent="Great2"]
-position = Vector2(-2550, -0.1)
-scale = Vector2(5, 9.15)
-shape = SubResource("RectangleShape2D_5vw27")
-
-[node name="Good2" type="Area2D" parent="."]
-position = Vector2(1050, 600)
-scale = Vector2(0.015625, 1)
-
-[node name="Good2" type="CollisionShape2D" parent="Good2"]
+[node name="Good2" type="CollisionShape2D" parent="StaffArea"]
 position = Vector2(-2100, 0)
 scale = Vector2(10, 8)
 shape = SubResource("RectangleShape2D_kek77")
 
-[node name="Bad2" type="Area2D" parent="."]
-position = Vector2(800, 200)
-scale = Vector2(0.25, 1)
+[node name="Great" type="CollisionShape2D" parent="StaffArea"]
+position = Vector2(-2250, -0.100006)
+scale = Vector2(5, 9.15)
+shape = SubResource("RectangleShape2D_5vw27")
 
-[node name="Bad2" type="CollisionShape2D" parent="Bad2"]
+[node name="Perfect" type="CollisionShape2D" parent="StaffArea"]
+position = Vector2(-2400, 0)
+scale = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_272bh")
+
+[node name="Great2" type="CollisionShape2D" parent="StaffArea"]
+position = Vector2(-2550, -0.100006)
+scale = Vector2(5, 9.15)
+shape = SubResource("RectangleShape2D_5vw27")
+
+[node name="Good" type="CollisionShape2D" parent="StaffArea"]
+position = Vector2(-2700, 0)
+scale = Vector2(10, 8.3)
+shape = SubResource("RectangleShape2D_kek77")
+
+[node name="Bad2" type="CollisionShape2D" parent="StaffArea"]
 position = Vector2(-3000, 0)
 scale = Vector2(20, 6.5)
 shape = SubResource("RectangleShape2D_4c57u")
+
+[node name="Delete" type="CollisionShape2D" parent="StaffArea"]
+position = Vector2(-3300, 0)
+scale = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_efxa6")
 
 [node name="Indicator" type="Sprite2D" parent="."]
 position = Vector2(800, 800)
@@ -242,24 +227,10 @@ shape = SubResource("RectangleShape2D_d13ii")
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
-[connection signal="area_shape_entered" from="Bad1" to="Bad1" method="_on_area_shape_entered"]
-[connection signal="body_entered" from="Bad1" to="Bad1" method="_on_body_entered"]
-[connection signal="body_shape_entered" from="Bad1" to="Bad1" method="_on_body_shape_entered"]
-[connection signal="area_shape_entered" from="Good1" to="Good1" method="_on_area_shape_entered"]
-[connection signal="body_entered" from="Good1" to="Good1" method="_on_body_entered"]
-[connection signal="body_shape_entered" from="Good1" to="Good1" method="_on_body_shape_entered"]
-[connection signal="area_shape_entered" from="Great1" to="Great1" method="_on_area_shape_entered"]
-[connection signal="body_entered" from="Great1" to="Great1" method="_on_body_entered"]
-[connection signal="body_shape_entered" from="Great1" to="Great1" method="_on_body_shape_entered"]
-[connection signal="area_shape_entered" from="Perfect" to="Perfect" method="_on_area_shape_entered"]
-[connection signal="body_entered" from="Perfect" to="Perfect" method="_on_body_entered"]
-[connection signal="body_shape_entered" from="Perfect" to="Perfect" method="_on_body_shape_entered"]
-[connection signal="area_shape_entered" from="Great2" to="Great2" method="_on_area_shape_entered"]
-[connection signal="body_entered" from="Great2" to="Great2" method="_on_body_entered"]
-[connection signal="body_shape_entered" from="Great2" to="Great2" method="_on_body_shape_entered"]
-[connection signal="area_shape_entered" from="Good2" to="Good2" method="_on_area_shape_entered"]
-[connection signal="body_entered" from="Good2" to="Good2" method="_on_body_entered"]
-[connection signal="body_shape_entered" from="Good2" to="Good2" method="_on_body_shape_entered"]
-[connection signal="area_shape_entered" from="Bad2" to="Bad2" method="_on_area_shape_entered"]
-[connection signal="body_entered" from="Bad2" to="Bad2" method="_on_body_entered"]
-[connection signal="body_shape_entered" from="Bad2" to="Bad2" method="_on_body_shape_entered"]
+[connection signal="noteHit" from="." to="StaffArea" method="_on_main_note_hit"]
+[connection signal="shuffleSig" from="." to="StaffArea" method="_on_main_shuffle_sig"]
+[connection signal="area_shape_entered" from="StaffArea" to="StaffArea" method="_on_area_shape_entered"]
+[connection signal="body_entered" from="StaffArea" to="StaffArea" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="StaffArea" to="StaffArea" method="_on_body_shape_entered"]
+[connection signal="completeMiss" from="StaffArea" to="." method="_on_staff_area_complete_miss"]
+[connection signal="entered" from="StaffArea" to="." method="_on_area_2d_entered"]
