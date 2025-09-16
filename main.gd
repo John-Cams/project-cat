@@ -1,6 +1,6 @@
 extends Node
 
-signal noteHit
+signal noteHit(hit: int)
 signal shuffleSig
 
 @onready
@@ -16,8 +16,8 @@ var shapes = [0,0,0,0]
 var activeShapes = []
 var inputsOn = false
 
-func _process(delta: float) -> void:
-	print(inputsOn)
+#func _process(delta: float) -> void:
+	#print(Global.listOfNotesAvailable)
 
 func shuffle() :
 	inputsOn = false
@@ -25,7 +25,7 @@ func shuffle() :
 	requiredInputs = [randi_range(0,3),randi_range(0,3),randi_range(0,3),randi_range(0,3)]
 	isShape = (randi_range(0,1)==0)
 	$Indicator.texture = types[int(!isShape)]
-	print(requiredInputs)
+	#print(requiredInputs)
 	
 	for s in activeShapes:
 		s.queue_free()
@@ -38,30 +38,34 @@ func shuffle() :
 			shapes[i] = requiredInputs[i]*4+randi_range(0,3)
 	
 	spawnShapes(shapes)
-	print(shapes)
+	#print(shapes)
 	
 func _input(event):
 	if inputsOn:
-		var requiredAction = inputs[requiredInputs[currentShape]]	
-		if event.is_action_pressed(requiredAction):
-			nextNote()
-		else:
-			var is_valid_input = false
-			for input_action in inputs:
-				if event.is_action_pressed(input_action):
-					is_valid_input = true
-					break 
-			if is_valid_input:
-				print("No")
+		print(event)
+		var is_valid_input = false
+		for input_action in inputs:
+			if event.is_action_pressed(input_action):
+				is_valid_input = true
+				break 
+		#if is_valid_input:
+		
+		
+			#print_debug(event)
+	#if inputsOn:
+		#var requiredAction = inputs[requiredInputs[currentShape]]	
+		#if event.is_action_pressed(requiredAction):
+			#nextNote()
+		#else:
 
 ## This function is ran whenever a note becomes "uselss"
 ## that is when the note passes the staff bar or is clicked
 func nextNote() :
-	noteHit.emit()
+	noteHit.emit(currentShape)
 	activeShapes[currentShape].visible = false
 	activeShapes[currentShape].get_node("NoteCS").disabled = true
 	
-	print("yes" + str(currentShape))
+	#print("yes" + str(currentShape))
 	if currentShape == 3:
 		shuffle()
 		currentShape = -1
@@ -90,8 +94,8 @@ func spawnShapes(shapeList) :
 
 
 
-func _on_area_2d_entered() -> void:
-	print("hi")
+#func _on_area_2d_entered() -> void:
+	#print("hi")
 
 
 func _on_staff_area_complete_miss() -> void:

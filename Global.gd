@@ -1,4 +1,4 @@
 extends Node
 
-var listOfNotes = []
+var listOfNotesAvailable = [-1,-1,-1,-1]
 var currentNote = 0
