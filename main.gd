@@ -15,12 +15,13 @@ var shapes = [0,0,0,0]
 var activeShapes = []
 var inputsOn = false
 
+
 @export
-var repeat = false
+var repeat = true
 
 func _process(delta: float) -> void:
 	if repeat:
-		print(Global.notesToExpect)
+		print(Global.finished)
 
 func shuffle() :
 	inputsOn = false
@@ -133,13 +134,13 @@ func nextNote(note) :
 	noteHit.emit(note)
 	activeShapes[note].visible = false
 	activeShapes[note].get_node("NoteCS").disabled = true
+	Global.finished.append(note)
 	
 	#print("yes" + str(currentShape))
-	if note == 3:
+	if Global.finished.size() == 4:
+		Global.finished = []
 		shuffle()
-		note = -1
-	note += 1
-	Global.currentNote = note
+		
 			
 func _ready() -> void:
 	shuffle()

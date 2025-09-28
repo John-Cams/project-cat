@@ -30,10 +30,11 @@ func _on_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, lo
 		#print(notesToExpect)
 		Global.listOfNotesAvailable[Global.notesToExpect[local_shape_index]] = local_shape_index
 	else:
+		Global.finished.append(Global.notesToExpect[6])
 		Global.listOfNotesAvailable[Global.notesToExpect[6]] = -1
 		amountMissed += 1
-		if amountMissed == 4:
-			amountMissed = 0
+		if Global.finished.size() == 4:
+			Global.finished == []
 			completeMiss.emit()
 	
 #func _on_body_shape_exited(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int):
