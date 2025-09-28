@@ -14,6 +14,8 @@ var xStaffMax = 1700
 var shapes = [0,0,0,0]
 var activeShapes = []
 var inputsOn = false
+var time = 0
+var notStarted = true
 
 
 @export
@@ -25,6 +27,8 @@ func _process(delta: float) -> void:
 
 func shuffle() :
 	inputsOn = false
+	Global.finished = []
+	Global.notesToExpect = [-1,-1,-1,-1,-1,-1,-1]
 	shuffleSig.emit()
 	Global.requiredInputs = [randi_range(0,3),randi_range(0,3),randi_range(0,3),randi_range(0,3)]
 	isShape = (randi_range(0,1)==0)
@@ -44,7 +48,6 @@ func shuffle() :
 	spawnShapes(shapes)
 	#print(shapes)
 
-	
 func _input(event):
 	if inputsOn:
 		var inputNum = -1
@@ -81,52 +84,10 @@ func _input(event):
 						if locations[note] == val:
 							theNote = note
 							break
-				
-				
 			if(theNote != -1):
 				nextNote(theNote)
-				print(theNote)
-					
-			#print(Global.requiredInputs)
-			#print(Global.notesToExpect)
-			#print(locations)
-			#print(locations[inputNum])
-			#print(inputNum)
-			#print(relevantNotes)
-			#print(theNote)
-			
-	
-	
-	
-	
-	
-	#if inputsOn:
-		#var is_valid_input = false
-		#print(Global.requiredInputs)
-		#print(event.is_action_pressedInputs)
-		#print(event in Global.requiredInputs)
-		#if event in Global.requiredInputs:
-			#var locations = [-1,-1,-1,-1]
-			#for i in range(Global.notesToExpect.size()):
-				#var item = Global.notesToExpect[i]
-				#locations[item] = i
-			#print(locations)
-		#var x = 1
-		#var requiredAction = inputs[Global.requiredInputs[currentShape]]	
-		#if event.is_action_pressed(requiredAction):
-			#nextNote()
-	#for input_action in inputs:
-		#if event.is_action_pressed(input_action):
-			#is_valid_input = true
-			#break 
-		#
-		#
-			#print_debug(event)
-	#if inputsOn:
-		#var requiredAction = inputs[Global.requiredInputs[currentShape]]	
-		#if event.is_action_pressed(requiredAction):
-			#nextNote()
-		#else:
+				#print(theNote)
+
 
 ## This function is ran whenever a note becomes "uselss"
 ## that is when the note passes the staff bar or is clicked
@@ -138,28 +99,35 @@ func nextNote(note) :
 	
 	#print("yes" + str(currentShape))
 	if Global.finished.size() == 4:
-		Global.finished = []
+		await $Timer.timeout
 		shuffle()
 		
 			
 func _ready() -> void:
 	shuffle()
 	
-func spawnShapes(shapeList) :
-	var distance = (xStaffMax - xStaffMin) / (shapeList.size())
-	for i in shapeList.size():
-		await $Timer.timeout
-		var new = $Note.duplicate()
-		new.position = Vector2(xStaffMin + (300*i), 200)
-		var anim_sprite: AnimatedSprite2D = new.get_node("NoteAS")
-		anim_sprite.frame = shapes[i]
-		add_child(new)
-		activeShapes.append(new)
-	
-	for i in activeShapes:
-		i.linear_velocity = Vector2(-300, 0)
-	
-	inputsOn = true	
+func spawnShapes(shapeList):	
+	if(notStarted):
+		notStarted = false
+		var distance = (xStaffMax - xStaffMin) / (shapeList.size())
+		for i in shapeList.size():
+			await $Timer.timeout
+			if!($Music.playing):
+				$Music.play()
+			var new = $Note.duplicate()
+			new.position = Vector2(xStaffMin + (300*i), 200)
+			var anim_sprite: AnimatedSprite2D = new.get_node("NoteAS")
+			anim_sprite.frame = shapes[i]
+			add_child(new)
+			activeShapes.append(new)
+		for i in activeShapes:
+			i.linear_velocity = Vector2(-300, 0)
+		inputsOn = true	
+	else:
+		await $Spawnstart.timeout
+		print("Wak")
+		notStarted=true
+		spawnShapes(shapeList)
 	
 
 
@@ -170,3 +138,12 @@ func spawnShapes(shapeList) :
 
 func _on_staff_area_complete_miss() -> void:
 	shuffle()
+
+
+func _on_audio_stream_player_finished() -> void:
+	$Music.play()
+
+
+func _on_timer_timeout() -> void:
+	print_debug("Hi")
+	time += 1
