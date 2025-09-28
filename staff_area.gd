@@ -8,7 +8,6 @@ signal completeMiss
 	#print("hi")
 
 var temp = 0
-var notesToExpect = [-1,-1,-1,-1,-1,-1,-1]
 var amountMissed = 0
 
 func _ready():
@@ -25,27 +24,29 @@ func _ready():
 	#print("hi")
 
 func _on_body_shape_entered(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int):
-	
 	if (!(local_shape_index==7)):
-		notesToExpect[local_shape_index] += 1	
+		Global.notesToExpect[local_shape_index] += 1	
 		temp += 1
 		#print(notesToExpect)
-		Global.listOfNotesAvailable[notesToExpect[local_shape_index]] = local_shape_index
+		Global.listOfNotesAvailable[Global.notesToExpect[local_shape_index]] = local_shape_index
 	else:
-		Global.listOfNotesAvailable[notesToExpect[6]] = -1
+		Global.listOfNotesAvailable[Global.notesToExpect[6]] = -1
 		amountMissed += 1
 		if amountMissed == 4:
 			amountMissed = 0
 			completeMiss.emit()
-		
-
-
-func _on_main_note_hit(note: int):
-	print(Global.listOfNotesAvailable)
 	
+#func _on_body_shape_exited(body_rid: RID, body: Node, body_shape_index: int, local_shape_index: int):
+	#print(body)
+	#if (!(local_shape_index==7)):
+		#Global.notesToExpect[local_shape_index] 
 
+
+#func _on_main_note_hit(note: int):
+	#print(Global.notesToExpect)
+	
 func _on_main_shuffle_sig() -> void:
-	notesToExpect = [-1,-1,-1,-1,-1,-1,-1]
+	Global.notesToExpect = [-1,-1,-1,-1,-1,-1,-1]
 	Global.listOfNotesAvailable = [-1,-1,-1,-1]
 	
 func unique_list(list):
