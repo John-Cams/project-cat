@@ -21,9 +21,9 @@ var notStarted = true
 @export
 var repeat = true
 
-func _process(delta: float) -> void:
-	if repeat:
-		print(Global.finished)
+#func _process(delta: float) -> void:
+	#if repeat:
+		#print(Global.finished)
 
 func shuffle() :
 	inputsOn = false
@@ -65,6 +65,8 @@ func _input(event):
 					
 			var relevantNotes = []
 			var theNote = -1
+			var theNoteLocation = -1
+			var relevancy = [0,6,1,5,2,4,3]
 			for j in Global.requiredInputs.size():
 				#print(inputNum == j)
 				if inputNum == Global.requiredInputs[j]:
@@ -74,20 +76,24 @@ func _input(event):
 			if relevantNotes.size() == 1:
 				if(locations[relevantNotes[0]]):
 					theNote = relevantNotes[0]
+					theNoteLocation = relevancy.find(locations[relevantNotes[0]])
 					#print("single:", theNote)
 			elif relevantNotes.size() != 0:
-				var relevancy = [0,6,1,5,2,4,3]
 				for val in relevancy:
 					for note in relevantNotes:
 						#print("location: ",locations[note])
 						#print("value: ",val)
 						if locations[note] == val:
 							theNote = note
+							theNoteLocation = relevancy.find(locations[relevantNotes[0]])
 							break
 			if(theNote != -1):
 				nextNote(theNote)
+				Global.score += (theNoteLocation+1)*100
+				print(theNoteLocation)
+				print(Global.score)
+				$Score.text = "Score:" + str(Global.score)
 				#print(theNote)
-
 
 ## This function is ran whenever a note becomes "uselss"
 ## that is when the note passes the staff bar or is clicked
@@ -145,5 +151,5 @@ func _on_audio_stream_player_finished() -> void:
 
 
 func _on_timer_timeout() -> void:
-	print_debug("Hi")
+	#print_debug("Hi")
 	time += 1

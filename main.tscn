@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bt0wlqj5k2ae8"]
+[gd_scene load_steps=40 format=3 uid="uid://bt0wlqj5k2ae8"]
 
 [ext_resource type="Script" uid="uid://76fuqau8a87i" path="res://main.gd" id="1_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://c60r5udhngma" path="res://assets/Staff.png" id="1_h2yge"]
@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cd6y6cpnvgtjh" path="res://assets/Notes.png" id="3_lquwl"]
 [ext_resource type="Texture2D" uid="uid://ctvrm68tloo0o" path="res://assets/Helper.png" id="5_272bh"]
 [ext_resource type="FontFile" uid="uid://sb6skutmwufe" path="res://assets/Roboto-Regular.ttf" id="7_272bh"]
-[ext_resource type="AudioStream" uid="uid://ctxgg0mgd6tgj" path="res://music/MelodyTut.mp3" id="8_5vw27"]
+[ext_resource type="Texture2D" uid="uid://buuouc3x2d7jr" path="res://assets/CritShapes.png" id="8_5vw27"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c57u"]
 
@@ -83,6 +83,38 @@ region = Rect2(200, 300, 100, 100)
 atlas = ExtResource("3_lquwl")
 region = Rect2(300, 300, 100, 100)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryguw"]
+atlas = ExtResource("8_5vw27")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d13ii"]
+atlas = ExtResource("8_5vw27")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1u8w0"]
+atlas = ExtResource("8_5vw27")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0odxb"]
+atlas = ExtResource("8_5vw27")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lswn8"]
+atlas = ExtResource("8_5vw27")
+region = Rect2(0, 100, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6jrf"]
+atlas = ExtResource("8_5vw27")
+region = Rect2(100, 100, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xuqvo"]
+atlas = ExtResource("8_5vw27")
+region = Rect2(200, 100, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qsp4k"]
+atlas = ExtResource("8_5vw27")
+region = Rect2(300, 100, 100, 100)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ryguw"]
 animations = [{
 "frames": [{
@@ -133,6 +165,30 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_getpj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryguw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d13ii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1u8w0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0odxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lswn8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6jrf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xuqvo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qsp4k")
 }],
 "loop": true,
 "name": &"default",
@@ -207,7 +263,7 @@ texture = ExtResource("2_1bvp3")
 position = Vector2(769, 637)
 texture = ExtResource("5_272bh")
 
-[node name="Label" type="Label" parent="."]
+[node name="Score" type="Label" parent="."]
 offset_right = 378.0
 offset_bottom = 71.0
 theme_override_fonts/font = ExtResource("7_272bh")
@@ -230,7 +286,6 @@ shape = SubResource("RectangleShape2D_d13ii")
 autostart = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_5vw27")
 
 [node name="Spawnstart" type="Timer" parent="."]
 wait_time = 8.0
