@@ -1,7 +1,8 @@
-[gd_scene load_steps=42 format=3 uid="uid://bt0wlqj5k2ae8"]
+[gd_scene load_steps=43 format=3 uid="uid://bt0wlqj5k2ae8"]
 
 [ext_resource type="Script" uid="uid://76fuqau8a87i" path="res://scripts/main.gd" id="1_85g3d"]
 [ext_resource type="Texture2D" uid="uid://c60r5udhngma" path="res://assets/Staff.png" id="2_choun"]
+[ext_resource type="Script" uid="uid://7einrdtvbckr" path="res://scripts/Global.gd" id="2_ya4ey"]
 [ext_resource type="Script" uid="uid://cpxgaxy67ksof" path="res://scripts/staff.gd" id="3_ya4ey"]
 [ext_resource type="Texture2D" uid="uid://btt4rot0n4o2k" path="res://assets/Shape.png" id="4_eb6dy"]
 [ext_resource type="Texture2D" uid="uid://ctvrm68tloo0o" path="res://assets/Helper.png" id="5_trceg"]
@@ -205,6 +206,9 @@ font_color = Color(0, 0, 0, 1)
 [node name="Main" type="Node"]
 script = ExtResource("1_85g3d")
 
+[node name="Global" type="Node" parent="."]
+script = ExtResource("2_ya4ey")
+
 [node name="Background" type="ColorRect" parent="."]
 offset_right = 1600.0
 offset_bottom = 1000.0
@@ -346,5 +350,6 @@ vertical_alignment = 1
 position = Vector2(800, 900)
 texture = ExtResource("9_85g3d")
 
+[connection signal="dataReady" from="Global" to="." method="_on_global_data_ready"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="Music" to="." method="_on_audio_stream_player_finished"]
