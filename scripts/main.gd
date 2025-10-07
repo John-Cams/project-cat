@@ -46,6 +46,7 @@ func shuffle():
 			Global.noteInputs.append(-1)
 			Global.noteCrit.append(null)
 			Global.noteComplete.append(true)
+			distanceDiv += 1
 		
 	distance = distanceBase/distanceDiv
 			
@@ -55,6 +56,7 @@ func shuffle():
 	$Indicator.texture = types[int(isShape)]
 	
 	print(Global.allNotes)
+	print("DistanceDiv: ", distanceDiv)
 	for i in distanceDiv:
 		print(i)
 		if(Global.notes[i]=="1"):
@@ -63,7 +65,7 @@ func shuffle():
 			else:
 				shapes.append(Global.noteInputs[i]*4+randi_range(0,3))
 		else:
-			shapes[i] = -1 
+			shapes.append(-1) 
 
 	print(Global.notes)	
 	print(shapes)
@@ -73,15 +75,17 @@ func shuffle():
 	
 
 
-func spawnShapes(shapeList):	
+func spawnShapes(shapeList):
 	print(distance)
 	for i in shapeList.size():
 		var note = shapeList[i]
-		var new = $Note.duplicate()
-		new.position = Vector2(minX+(distance*(i+1)), 200)
-		var anim_sprite: AnimatedSprite2D = new.get_node("NoteAS")
-		anim_sprite.frame = note
-		add_child(new)
+		if (note!=-1):
+			var new = $Note.duplicate()
+			new.position = Vector2(minX+(distance*(i+1)), 200)
+			var anim_sprite = new.get_node("NoteAS")
+			anim_sprite.frame = note
+			add_child(new)
+			print("Hello")
 
 func _on_global_data_ready() -> void:
 	if isReady:
