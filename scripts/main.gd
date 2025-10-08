@@ -2,7 +2,7 @@ extends Node
 
 var types = [preload("res://assets//Color.png"),preload("res://assets//Shape.png")]
 var inputs = ["redHeart","yellowCircle","greenDiamond","blueTriangle"]
-var colors = ["#FF8888","#FFFF88","#88FF88","8888FF"]
+@export var _colors: PackedColorArray
 var shapes = []
 var isReady = false
 var minX = 400
@@ -18,11 +18,22 @@ func _ready():
 	minX = get_node("Staff/PerfectArea/Perfect").global_position.x
 	distanceBase = ((maxX-100)-(minX+100))
 
-func _input(event):
-	if event.is_action_pressed("spaceBar"):
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("spaceBar"):
 		$ColorRect.visible = false
 		shuffle()
+		return
 		
+	var doContinue = false
+	var inputLocations = []
+	for i in Global.noteInputs.size():
+		if(Input.is_action_just_pressed(inputs[Global.noteInputs[i]])):
+			doContinue = true
+			inputLocations.append(i)
+	if doContinue:
+		print(inputLocations)
+	
+
 func shuffle():
 	
 	var isShape = false
@@ -32,13 +43,16 @@ func shuffle():
 	Global.noteLocations = []
 	Global.noteCrit = []
 	Global.noteComplete = []
+	Global.noteInputs = []
+	Global.notesOnScreen = []
+	shapes = []
 	
 	var distanceDiv = 0
 	for i in Global.notes:
 		if(i=="1"):
-			Global.noteLocations.append(null)
+			Global.noteLocations.append(-1)
 			Global.noteInputs.append(randi_range(0,3))
-			Global.noteCrit.append(randi_range(1,10)==10)
+			Global.noteCrit.append(randi_range(0,9)==9)
 			Global.noteComplete.append(false)
 			distanceDiv += 1
 		else:
@@ -46,8 +60,8 @@ func shuffle():
 			Global.noteInputs.append(-1)
 			Global.noteCrit.append(null)
 			Global.noteComplete.append(true)
-			distanceDiv += 1
-		
+			distanceDiv += 1 
+	
 	distance = distanceBase/distanceDiv
 			
 	
@@ -55,28 +69,19 @@ func shuffle():
 	isShape = (randi_range(0,1)==0)
 	$Indicator.texture = types[int(isShape)]
 	
-	print(Global.allNotes)
-	print("DistanceDiv: ", distanceDiv)
 	for i in distanceDiv:
-		print(i)
+		var crit = (Global.noteCrit[i])
 		if(Global.notes[i]=="1"):
 			if isShape:
-				shapes.append(Global.noteInputs[i]+4*randi_range(0,3))
+				shapes.append(20+Global.noteInputs[i] if crit else Global.noteInputs[i]+4*randi_range(0,3))
 			else:
-				shapes.append(Global.noteInputs[i]*4+randi_range(0,3))
+				shapes.append(16+Global.noteInputs[i] if crit else Global.noteInputs[i]*4+randi_range(0,3))
 		else:
 			shapes.append(-1) 
-
-	print(Global.notes)	
-	print(shapes)
 	
 	spawnShapes(shapes)
-	
-	
-
 
 func spawnShapes(shapeList):
-	print(distance)
 	for i in shapeList.size():
 		var note = shapeList[i]
 		if (note!=-1):
@@ -84,8 +89,12 @@ func spawnShapes(shapeList):
 			new.position = Vector2(minX+(distance*(i+1)), 200)
 			var anim_sprite = new.get_node("NoteAS")
 			anim_sprite.frame = note
+			Global.notesOnScreen.append(new)
 			add_child(new)
-			print("Hello")
+			
+	
+	for note in Global.notesOnScreen:
+		note.linear_velocity = Vector2(-distance*(Global.BPM/60.0),0)
 
 func _on_global_data_ready() -> void:
 	if isReady:

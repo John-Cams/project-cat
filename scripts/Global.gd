@@ -15,12 +15,13 @@ var allNotes = []
 
 var currentBar = -1
 var notes = []
+var notesOnScreen = []
 var noteLocations = []
 var noteInputs = []
 var noteCrit = []
 var noteComplete = []
+var BPM = 0
 
-##Reads the filePath and sets allNotes
 func _ready():
 	
 	if not FileAccess.file_exists(filePath):
@@ -30,6 +31,7 @@ func _ready():
 	var file = FileAccess.open(filePath, FileAccess.READ)
 	var text = file.get_as_text()
 	file.close()
+	BPM = ""
 	
 	var appendTime = false
 	var _temp = 0
@@ -46,5 +48,8 @@ func _ready():
 		else:
 			if(appendTime):
 				allNotes[currentBar].append(i)
+			else:
+				BPM += i
 	currentBar = 0
+	BPM = int(BPM)
 	dataReady.emit()
