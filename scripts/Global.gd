@@ -14,13 +14,20 @@ var filePath = 'res://charts/MelodyTut.txt'
 var allNotes = []
 
 var currentBar = -1
+##String either 1 or 0
 var notes = []
 var notesOnScreen = []
+##Int 1-7 and -1
 var noteLocations = []
+##Int 0-3
 var noteInputs = []
+##True false or null
 var noteCrit = []
+##Int 1-7 and -1
 var noteComplete = []
+
 var BPM = 0
+var score = 0
 
 func _ready():
 	

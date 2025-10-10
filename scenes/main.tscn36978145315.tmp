@@ -205,7 +205,7 @@ font_color = Color(0, 0, 0, 1)
 
 [node name="Main" type="Node"]
 script = ExtResource("1_85g3d")
-colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1)
+_colors = PackedColorArray(1, 0.53333336, 0.53333336, 1, 1, 1, 0.53333336, 1, 0.53333336, 1, 0.53333336, 1, 0.53333336, 0.53333336, 1, 1)
 
 [node name="Global" type="Node" parent="."]
 script = ExtResource("2_ya4ey")

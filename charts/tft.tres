@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="Chart" load_steps=2 format=3 uid="uid://dlxkypjra3cgl"]
-
-[ext_resource type="Script" uid="uid://dw0vneuvvem0g" path="res://resources/RChart.gd" id="1_ofhcw"]
-
-[resource]
-script = ExtResource("1_ofhcw")
-notes = Array[Array]([[AABB(0, 0, 0, 0, 0, 0)]])
-metadata/_custom_type_script = "uid://dw0vneuvvem0g"

@@ -2,7 +2,7 @@ extends Node
 
 var types = [preload("res://assets//Color.png"),preload("res://assets//Shape.png")]
 var inputs = ["redHeart","yellowCircle","greenDiamond","blueTriangle"]
-@export var _colors: PackedColorArray
+@export var colors: PackedColorArray
 var shapes = []
 var isReady = false
 var minX = 400
@@ -25,17 +25,44 @@ func _process(_delta: float) -> void:
 		return
 		
 	var doContinue = false
+	
+	##Indexes of important notes
 	var inputLocations = []
 	for i in Global.noteInputs.size():
 		if(Input.is_action_just_pressed(inputs[Global.noteInputs[i]])):
 			doContinue = true
 			inputLocations.append(i)
-	if doContinue:
-		print(inputLocations)
+	if !doContinue:
+		return
+	
+	##The place where index of the pressed note
+	var location = -1
+	##The sensor where the note was pressed
+	var score = -1
+	if inputLocations.size()==1:
+		location = inputLocations[0]
+		score = Global.noteLocations[inputLocations[0]]
+	elif inputLocations.size() == 0:
+		return
+	else:
+		location = Global.noteLocations.find(Global.noteLocations.max())
+		score = Global.noteLocations.max()
+	
+	if Global.noteComplete[location]:
+		return
+	
+	Global.noteComplete[location] = true
+	var crit = 2 if Global.noteCrit[location] else 1
+	
+	changeScore(score*1000*crit)
 	
 
+
+func changeScore(add: int):
+	Global.score += add
+	$Score.text = "Score: " + str(Global.score)
+
 func shuffle():
-	
 	var isShape = false
 	
 	
@@ -59,15 +86,17 @@ func shuffle():
 			Global.noteLocations.append(null)
 			Global.noteInputs.append(-1)
 			Global.noteCrit.append(null)
-			Global.noteComplete.append(true)
+			Global.noteComplete.append(null)
 			distanceDiv += 1 
 	
 	distance = distanceBase/distanceDiv
-			
+	Global.noteInputs = [1,0,0,0]
+	print(Global.noteInputs)
 	
 	
 	isShape = (randi_range(0,1)==0)
 	$Indicator.texture = types[int(isShape)]
+	$Staff/CoolColors.color = colors[int(isShape)]
 	
 	for i in distanceDiv:
 		var crit = (Global.noteCrit[i])
