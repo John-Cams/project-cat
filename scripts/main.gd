@@ -2,6 +2,7 @@ extends Node
 
 var types = [preload("res://assets//Color.png"),preload("res://assets//Shape.png")]
 var inputs = ["redHeart","yellowCircle","greenDiamond","blueTriangle"]
+const NOTE = preload("uid://r6edhxgequhp")
 @export var colors: PackedColorArray
 var shapes = []
 var isReady = false
@@ -9,6 +10,8 @@ var minX = 400
 var maxX = 1500
 var distanceBase = 0
 var distance = 0
+var first = true
+var inputOn = false
 
 #Look at matrix for every line there will be four numbers 1-0 if number is 1 spawn at that location else don't 
 #
@@ -19,19 +22,20 @@ func _ready():
 	distanceBase = ((maxX-100)-(minX+100))
 
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("spaceBar"):
-		$ColorRect.visible = false
-		shuffle()
+	if !inputOn:
 		return
-		
+	
 	var doContinue = false
 	
 	##Indexes of important notes
 	var inputLocations = []
+	##Locations of important notes
+	var noteLocations = []
 	for i in Global.noteInputs.size():
 		if(Input.is_action_just_pressed(inputs[Global.noteInputs[i]])):
 			doContinue = true
 			inputLocations.append(i)
+			noteLocations.append(Global.noteLocations[i])
 	if !doContinue:
 		return
 	
@@ -43,18 +47,29 @@ func _process(_delta: float) -> void:
 		location = inputLocations[0]
 		score = Global.noteLocations[inputLocations[0]]
 	elif inputLocations.size() == 0:
+		score -= 1000
 		return
 	else:
 		location = Global.noteLocations.find(Global.noteLocations.max())
 		score = Global.noteLocations.max()
 	
+	if score < 1:
+		score -= 1000
+		return
+	
 	if Global.noteComplete[location]:
+		return
+		
+	if Global.notesOnScreen[location].get_child_count() == 0:
 		return
 	
 	Global.noteComplete[location] = true
 	var crit = 2 if Global.noteCrit[location] else 1
 	
+	Global.notesOnScreen[location].get_node("NoteAS").visible = false 
 	changeScore(score*1000*crit)
+	
+	
 	
 
 
@@ -63,6 +78,8 @@ func changeScore(add: int):
 	$Score.text = "Score: " + str(Global.score)
 
 func shuffle():
+	var inputOn = false
+	
 	var isShape = false
 	
 	
@@ -71,7 +88,6 @@ func shuffle():
 	Global.noteCrit = []
 	Global.noteComplete = []
 	Global.noteInputs = []
-	Global.notesOnScreen = []
 	shapes = []
 	
 	var distanceDiv = 0
@@ -83,15 +99,13 @@ func shuffle():
 			Global.noteComplete.append(false)
 			distanceDiv += 1
 		else:
-			Global.noteLocations.append(null)
+			Global.noteLocations.append(0)
 			Global.noteInputs.append(-1)
-			Global.noteCrit.append(null)
-			Global.noteComplete.append(null)
+			Global.noteCrit.append(false)
+			Global.noteComplete.append(false)
 			distanceDiv += 1 
 	
 	distance = distanceBase/distanceDiv
-	Global.noteInputs = [1,0,0,0]
-	print(Global.noteInputs)
 	
 	
 	isShape = (randi_range(0,1)==0)
@@ -108,22 +122,37 @@ func shuffle():
 		else:
 			shapes.append(-1) 
 	
+	
 	spawnShapes(shapes)
 
 func spawnShapes(shapeList):
+	
 	for i in shapeList.size():
+		await $Timer.timeout
 		var note = shapeList[i]
 		if (note!=-1):
-			var new = $Note.duplicate()
+			var new = NOTE.instantiate()
 			new.position = Vector2(minX+(distance*(i+1)), 200)
 			var anim_sprite = new.get_node("NoteAS")
 			anim_sprite.frame = note
 			Global.notesOnScreen.append(new)
 			add_child(new)
+		else:
+			Global.notesOnScreen.append(RigidBody2D.new())
+		
+	if !first:
+		Global.notesOnScreen.remove_at(3)
+		Global.notesOnScreen.remove_at(2)
+		Global.notesOnScreen.remove_at(1)
+		Global.notesOnScreen.remove_at(0)
+	else:
+		first = false
 			
 	
 	for note in Global.notesOnScreen:
 		note.linear_velocity = Vector2(-distance*(Global.BPM/60.0),0)
+		
+	inputOn = true
 
 func _on_global_data_ready() -> void:
 	if isReady:
@@ -131,3 +160,11 @@ func _on_global_data_ready() -> void:
 	else:
 		await ready
 		shuffle()
+
+
+func _on_spawnstart_timeout() -> void:
+	shuffle()
+
+
+func _on_anti_spammer_timeout() -> void:
+	pass # Replace with function body.

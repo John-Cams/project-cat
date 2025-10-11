@@ -16,6 +16,7 @@ var allNotes = []
 var currentBar = -1
 ##String either 1 or 0
 var notes = []
+##Node the notes on screen
 var notesOnScreen = []
 ##Int 1-7 and -1
 var noteLocations = []
