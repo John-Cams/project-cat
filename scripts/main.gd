@@ -85,13 +85,12 @@ func changeScore(add: int):
 	$Score.text = "Score: " + str(Global.score)
 
 func shuffle():
-	inputOn = false
 	
 	var isShape = false
 	
 	
 	Global.notes = Global.allNotes[Global.currentBar]
-	#Global.currentBar += 1
+	Global.currentBar += 1
 	Global.noteLocations = []
 	Global.noteCrit = []
 	Global.noteComplete = []
@@ -135,6 +134,9 @@ func shuffle():
 
 func spawnShapes(shapeList):
 	
+	Global.notesOnScreen = []
+	$Timer.wait_time = (((float(Global.BPM)/60)*4.0/float(Global.notes.size())))
+	
 	for i in shapeList.size():
 		await $Timer.timeout
 		var note = shapeList[i]
@@ -145,14 +147,6 @@ func spawnShapes(shapeList):
 			anim_sprite.frame = note
 			Global.notesOnScreen.append(new)
 			add_child(new)
-			if Global.notesOnScreen.size() == 8:
-				if !first:
-					Global.notesOnScreen.remove_at(3)
-					Global.notesOnScreen.remove_at(2)
-					Global.notesOnScreen.remove_at(1)
-					Global.notesOnScreen.remove_at(0)
-				else:
-					first = false
 		else:
 			Global.notesOnScreen.append(RigidBody2D.new())
 		
