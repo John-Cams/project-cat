@@ -2,18 +2,30 @@ extends Node
 
 signal hit(score: int)
 
+##The two sprites used to indicate Color mode and Shape mode
 var types = [preload("res://assets//Color.png"),preload("res://assets//Shape.png")]
+##The name of the inputs
 var inputs = ["redHeart","yellowCircle","greenDiamond","blueTriangle"]
+##The scene of the note
 const NOTE = preload("res://scenes/note.tscn")
+##Colors to be used later
 @export var colors: PackedColorArray
+##List of current shapes
 var shapes = []
+## Boolean that turns on when the scene is ready
 var isReady = false
+##The mimimum x value of the bar
 var minX = 400
+##The maximum x value of the bar
 var maxX = 1500
+##The difference between the max and min
 var distanceBase = 0
+##The distance between each note
 var distance = 0
-var first = true
+##Turns the inputs on or off
 var inputOn = false
+##The index of the note in Global.notes
+var currentNote = 0
 
 #Look at matrix for every line there will be four numbers 1-0 if number is 1 spawn at that location else don't 
 
@@ -23,9 +35,10 @@ func _ready():
 	distanceBase = ((maxX-100)-(minX+100))
 
 func _process(_delta: float) -> void:
-	#print(Global.noteLocations)afda
+	#Only runs if inputOn is on
 	if !inputOn:
 		return
+	
 	
 	var doContinue = false
 	
@@ -33,6 +46,7 @@ func _process(_delta: float) -> void:
 	var inputLocations = []
 	##Locations of important notes
 	var noteLocations = []
+	##Only runs if the input is one in Global.noteiNputs
 	for i in Global.noteInputs.size():
 		if(Input.is_action_just_pressed(inputs[Global.noteInputs[i]])):
 			doContinue = true
@@ -45,56 +59,60 @@ func _process(_delta: float) -> void:
 	var location = -1
 	##The sensor where the note was pressed
 	var score = -1
+	
+	##Only runs if the size of inputLocations is 0
 	if inputLocations.size()==1:
 		location = inputLocations[0]
 		score = Global.noteLocations[inputLocations[0]]
 	elif inputLocations.size() == 0:
-		score -= 1000
+		changeScore(-1000)
+		$Cat.texture = Global.catTextures[1]
 		return
 	else:
-		location = Global.noteLocations.find(Global.noteLocations.max())
-		score = Global.noteLocations.max()
+		location = Global.noteLocations.find(noteLocations.max())
+		score = noteLocations.max()
 	
+	##Only runs if the location of the pressed note is actually in a sensor
 	if score < 1:
-		print("hello")
 		changeScore(-1000)
 		$Cat.texture = Global.catTextures[1]
 		return
 	
+	##Only runs if the note is not already completed
 	if Global.noteComplete[location]:
 		return
 		
+	#Only runs if the note is not a blank note
 	if Global.notesOnScreen[location].get_child_count() == 0:
 		return
 	
+	#Sets the note's completeness to true
 	Global.noteComplete[location] = true
 	var crit = 2 if Global.noteCrit[location] else 1
 	
+	#Emits a score signal
 	hit.emit(score)
 	$Cat.texture = Global.catTextures[0]
 	
+	#Makes the note invisible and changes the score depending on the noets location
 	Global.notesOnScreen[location].get_node("NoteAS").visible = false 
 	changeScore(score*1000*crit)
-	
-	
-	
 
-
+##Changes the displayed score and the actuall score
 func changeScore(add: int):
 	Global.score += add
 	$Score.text = "Score: " + str(Global.score)
 
+##Creates a random pattern for the user to press
 func shuffle():
 	
 	var isShape = false
 	
-	
+	if Global.currentBar >= Global.allNotes.size():
+		Global.currentBar = 0
 	Global.notes = Global.allNotes[Global.currentBar]
 	Global.currentBar += 1
-	Global.noteLocations = []
-	Global.noteCrit = []
-	Global.noteComplete = []
-	Global.noteInputs = []
+	
 	shapes = []
 	
 	var distanceDiv = 0
@@ -110,7 +128,7 @@ func shuffle():
 			Global.noteInputs.append(-1)
 			Global.noteCrit.append(false)
 			Global.noteComplete.append(false)
-			distanceDiv += 1 
+			distanceDiv += 1
 	
 	distance = distanceBase/distanceDiv
 	
@@ -123,18 +141,17 @@ func shuffle():
 		var crit = (Global.noteCrit[i])
 		if(Global.notes[i]=="1"):
 			if isShape:
-				shapes.append(20+Global.noteInputs[i] if crit else Global.noteInputs[i]+4*randi_range(0,3))
+				shapes.append(20+Global.noteInputs[currentNote] if crit else Global.noteInputs[currentNote]+4*randi_range(0,3))
 			else:
-				shapes.append(16+Global.noteInputs[i] if crit else Global.noteInputs[i]*4+randi_range(0,3))
+				shapes.append(16+Global.noteInputs[currentNote] if crit else Global.noteInputs[currentNote]*4+randi_range(0,3))
 		else:
 			shapes.append(-1) 
-	
+		currentNote += 1
 	
 	spawnShapes(shapes)
 
 func spawnShapes(shapeList):
 	
-	Global.notesOnScreen = []
 	$Timer.wait_time = (((float(Global.BPM)/60)*4.0/float(Global.notes.size())))
 	
 	for i in shapeList.size():
@@ -149,9 +166,6 @@ func spawnShapes(shapeList):
 			add_child(new)
 		else:
 			Global.notesOnScreen.append(RigidBody2D.new())
-		
-	
-			
 	
 	for note in Global.notesOnScreen:
 		note.linear_velocity = Vector2(-distance*(Global.BPM/60.0),0)
@@ -164,7 +178,6 @@ func _on_global_data_ready() -> void:
 	else:
 		await ready
 		shuffle()
-
 
 func _on_spawnstart_timeout() -> void:
 	shuffle()

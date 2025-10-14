@@ -16,4 +16,3 @@ func _on_area_entered(body: Node, area: Area2D):
 	else:
 		Global.noteLocations[shapeNum] = areaNum
 	
-	
