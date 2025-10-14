@@ -1,8 +1,10 @@
 extends Node
 
+signal hit(score: int)
+
 var types = [preload("res://assets//Color.png"),preload("res://assets//Shape.png")]
 var inputs = ["redHeart","yellowCircle","greenDiamond","blueTriangle"]
-const NOTE = preload("uid://r6edhxgequhp")
+const NOTE = preload("res://scenes/note.tscn")
 @export var colors: PackedColorArray
 var shapes = []
 var isReady = false
@@ -14,7 +16,6 @@ var first = true
 var inputOn = false
 
 #Look at matrix for every line there will be four numbers 1-0 if number is 1 spawn at that location else don't 
-#
 
 func _ready():
 	isReady = true
@@ -22,6 +23,7 @@ func _ready():
 	distanceBase = ((maxX-100)-(minX+100))
 
 func _process(_delta: float) -> void:
+	#print(Global.noteLocations)afda
 	if !inputOn:
 		return
 	
@@ -54,7 +56,9 @@ func _process(_delta: float) -> void:
 		score = Global.noteLocations.max()
 	
 	if score < 1:
-		score -= 1000
+		print("hello")
+		changeScore(-1000)
+		$Cat.texture = Global.catTextures[1]
 		return
 	
 	if Global.noteComplete[location]:
@@ -65,6 +69,9 @@ func _process(_delta: float) -> void:
 	
 	Global.noteComplete[location] = true
 	var crit = 2 if Global.noteCrit[location] else 1
+	
+	hit.emit(score)
+	$Cat.texture = Global.catTextures[0]
 	
 	Global.notesOnScreen[location].get_node("NoteAS").visible = false 
 	changeScore(score*1000*crit)
@@ -78,12 +85,13 @@ func changeScore(add: int):
 	$Score.text = "Score: " + str(Global.score)
 
 func shuffle():
-	var inputOn = false
+	inputOn = false
 	
 	var isShape = false
 	
 	
 	Global.notes = Global.allNotes[Global.currentBar]
+	#Global.currentBar += 1
 	Global.noteLocations = []
 	Global.noteCrit = []
 	Global.noteComplete = []
@@ -137,16 +145,18 @@ func spawnShapes(shapeList):
 			anim_sprite.frame = note
 			Global.notesOnScreen.append(new)
 			add_child(new)
+			if Global.notesOnScreen.size() == 8:
+				if !first:
+					Global.notesOnScreen.remove_at(3)
+					Global.notesOnScreen.remove_at(2)
+					Global.notesOnScreen.remove_at(1)
+					Global.notesOnScreen.remove_at(0)
+				else:
+					first = false
 		else:
 			Global.notesOnScreen.append(RigidBody2D.new())
 		
-	if !first:
-		Global.notesOnScreen.remove_at(3)
-		Global.notesOnScreen.remove_at(2)
-		Global.notesOnScreen.remove_at(1)
-		Global.notesOnScreen.remove_at(0)
-	else:
-		first = false
+	
 			
 	
 	for note in Global.notesOnScreen:
@@ -164,7 +174,3 @@ func _on_global_data_ready() -> void:
 
 func _on_spawnstart_timeout() -> void:
 	shuffle()
-
-
-func _on_anti_spammer_timeout() -> void:
-	pass # Replace with function body.

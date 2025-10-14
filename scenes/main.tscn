@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bt0wlqj5k2ae8"]
+[gd_scene load_steps=17 format=3 uid="uid://bt0wlqj5k2ae8"]
 
 [ext_resource type="Script" uid="uid://76fuqau8a87i" path="res://scripts/main.gd" id="1_85g3d"]
 [ext_resource type="Texture2D" uid="uid://c60r5udhngma" path="res://assets/Staff.png" id="2_choun"]
@@ -9,6 +9,7 @@
 [ext_resource type="FontFile" uid="uid://sb6skutmwufe" path="res://assets/Roboto-Regular.ttf" id="6_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://gml7puc4wny3" path="res://assets/happyCat.png" id="9_85g3d"]
 [ext_resource type="PackedScene" uid="uid://r6edhxgequhp" path="res://scenes/note.tscn" id="9_choun"]
+[ext_resource type="Script" uid="uid://dghcjrvuudoy7" path="res://scenes/audio_stream_player.gd" id="10_choun"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_efxa6"]
 
@@ -132,7 +133,7 @@ autostart = true
 [node name="Music" type="AudioStreamPlayer" parent="."]
 
 [node name="Spawnstart" type="Timer" parent="."]
-wait_time = 8.0
+wait_time = 8.2
 autostart = true
 
 [node name="ColorRect2" type="ColorRect" parent="."]
@@ -165,6 +166,10 @@ position = Vector2(-100, -100)
 
 [node name="AntiSpammer" type="Timer" parent="."]
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+script = ExtResource("10_choun")
+
+[connection signal="hit" from="." to="AudioStreamPlayer" method="_on_main_hit"]
 [connection signal="dataReady" from="Global" to="." method="_on_global_data_ready"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="finished" from="Music" to="." method="_on_audio_stream_player_finished"]

@@ -13,6 +13,8 @@ signal dataReady
 var filePath = 'res://charts/MelodyTut.txt'
 var allNotes = []
 
+var catTextures = [preload("res://assets/happyCat.png"),preload("res://assets/sadCat.png")]
+
 var currentBar = -1
 ##String either 1 or 0
 var notes = []
