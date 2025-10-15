@@ -28,6 +28,7 @@ font_color = Color(0, 0, 0, 1)
 [node name="Main" type="Node"]
 script = ExtResource("1_85g3d")
 colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1)
+reaction = PackedColorArray(0.4862745, 0, 0.47058824, 1, 1, 0.7357336, 0.89642155, 1, 0, 1, 1, 1, 1, 1, 0, 1)
 
 [node name="Global" type="Node" parent="."]
 script = ExtResource("2_ya4ey")

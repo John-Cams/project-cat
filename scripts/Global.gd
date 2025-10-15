@@ -10,7 +10,7 @@ extends Node
 #TODO Implement these do actually work
 signal dataReady
 
-var filePath = 'res://charts/MelodyTut.txt'
+var filePath = 'res://charts/chart1.txt'
 var allNotes = []
 
 var catTextures = [preload("res://assets/happyCat.png"),preload("res://assets/sadCat.png")]

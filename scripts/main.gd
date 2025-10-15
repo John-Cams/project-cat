@@ -10,6 +10,8 @@ var inputs = ["redHeart","yellowCircle","greenDiamond","blueTriangle"]
 const NOTE = preload("res://scenes/note.tscn")
 ##Colors to be used later
 @export var colors: PackedColorArray
+##Colors for reaction
+@export var reaction: PackedColorArray
 ##List of current shapes
 var shapes = []
 ## Boolean that turns on when the scene is ready
@@ -33,12 +35,12 @@ func _ready():
 	isReady = true
 	minX = get_node("Staff/PerfectArea/Perfect").global_position.x
 	distanceBase = ((maxX-100)-(minX+100))
+	$Spawnstart.wait_time = ((60.0/Global.BPM)*8.0)
 
 func _process(_delta: float) -> void:
 	#Only runs if inputOn is on
 	if !inputOn:
 		return
-	
 	
 	var doContinue = false
 	
@@ -96,7 +98,11 @@ func _process(_delta: float) -> void:
 	
 	#Makes the note invisible and changes the score depending on the noets location
 	Global.notesOnScreen[location].get_node("NoteAS").visible = false 
-	changeScore(score*1000*crit)
+	changeScore((score/2)*1000*crit)
+	var prevColor = $Staff/CoolColors.color
+	$Staff/CoolColors.color = reaction[((score-1)/2)]
+	await $Timer.timeout
+	$Staff/CoolColors.color = prevColor
 
 ##Changes the displayed score and the actuall score
 func changeScore(add: int):
@@ -108,8 +114,13 @@ func shuffle():
 	
 	var isShape = false
 	
-	if Global.currentBar >= Global.allNotes.size():
-		Global.currentBar = 0
+	#print(Global.currentBar)
+	#print(Global.allNotes.size())
+	if Global.currentBar == Global.allNotes.size():
+		#get_tree().change_scene_to_file("res://scenes/endScreen.tscn")
+		#print("Hai")
+		#return
+		Global.currentBar = -1
 	Global.notes = Global.allNotes[Global.currentBar]
 	Global.currentBar += 1
 	
@@ -152,7 +163,7 @@ func shuffle():
 
 func spawnShapes(shapeList):
 	
-	$Timer.wait_time = (((float(Global.BPM)/60)*4.0/float(Global.notes.size())))
+	$Timer.wait_time = (((float(Global.BPM)/60)*4.0/shapeList.size()))
 	
 	for i in shapeList.size():
 		await $Timer.timeout
@@ -168,7 +179,7 @@ func spawnShapes(shapeList):
 			Global.notesOnScreen.append(RigidBody2D.new())
 	
 	for note in Global.notesOnScreen:
-		note.linear_velocity = Vector2(-distance*(Global.BPM/60.0),0)
+		note.linear_velocity = Vector2(-distance/$Timer.wait_time,0)
 		
 	inputOn = true
 
