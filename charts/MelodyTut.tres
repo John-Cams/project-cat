@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Chart" load_steps=2 format=3 uid="uid://dlxkypjra3cgl"]
+[gd_resource type="Resource" script_class="Chart" load_steps=3 format=3 uid="uid://dlxkypjra3cgl"]
 
+[ext_resource type="Texture2D" uid="uid://by7cg2bl0ig0o" path="res://assets/happy.png" id="1_k7g18"]
 [ext_resource type="Script" uid="uid://dw0vneuvvem0g" path="res://resources/RChart.gd" id="1_r10kt"]
 
 [resource]
@@ -7,4 +8,5 @@ script = ExtResource("1_r10kt")
 BPM = 100
 notes = "1111|1111|1111|1111"
 endChart = true
+albumCover = ExtResource("1_k7g18")
 metadata/_custom_type_script = "uid://dw0vneuvvem0g"

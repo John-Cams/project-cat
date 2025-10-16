@@ -114,14 +114,15 @@ func shuffle():
 	
 	var isShape = false
 	
-	#print(Global.currentBar)
 	#print(Global.allNotes.size())
 	if Global.currentBar == Global.allNotes.size():
-		#get_tree().change_scene_to_file("res://scenes/endScreen.tscn")
-		#print("Hai")
-		#return
-		Global.currentBar = -1
+		get_tree().change_scene_to_file("res://scenes/endScreen.tscn")
+		print("Hai")
+		return
+		#Global.currentBar = -1
 	Global.notes = Global.allNotes[Global.currentBar]
+	print(Global.currentBar)
+	print(Global.notes)
 	Global.currentBar += 1
 	
 	shapes = []
@@ -131,7 +132,13 @@ func shuffle():
 		if(i=="1"):
 			Global.noteLocations.append(-1)
 			Global.noteInputs.append(randi_range(0,3))
-			Global.noteCrit.append(randi_range(0,9)==9)
+			Global.noteCrit.append(false)
+			Global.noteComplete.append(false)
+			distanceDiv += 1
+		elif(i=="2"):
+			Global.noteLocations.append(-1)
+			Global.noteInputs.append(randi_range(0,3))
+			Global.noteCrit.append(true)
 			Global.noteComplete.append(false)
 			distanceDiv += 1
 		else:
@@ -142,15 +149,15 @@ func shuffle():
 			distanceDiv += 1
 	
 	distance = distanceBase/distanceDiv
-	
+	print(Global.noteCrit)
 	
 	isShape = (randi_range(0,1)==0)
 	$Indicator.texture = types[int(isShape)]
 	$Staff/CoolColors.color = colors[int(isShape)]
 	
 	for i in distanceDiv:
-		var crit = (Global.noteCrit[i])
-		if(Global.notes[i]=="1"):
+		var crit = (Global.noteCrit[currentNote])
+		if(Global.notes[i]!="0"):
 			if isShape:
 				shapes.append(20+Global.noteInputs[currentNote] if crit else Global.noteInputs[currentNote]+4*randi_range(0,3))
 			else:

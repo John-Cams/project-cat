@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1sjo6heyko64"]
+[gd_scene load_steps=2 format=3 uid="uid://d1sjo6heyko64"]
 
 [ext_resource type="Script" uid="uid://bfrv7s8nl7qqh" path="res://scenes/end_screen.gd" id="1_5pmb2"]
-[ext_resource type="Texture2D" uid="uid://ctvrm68tloo0o" path="res://assets/Helper.png" id="2_7ct0a"]
 
 [node name="EndScreen" type="Node"]
 script = ExtResource("1_5pmb2")
@@ -11,7 +10,7 @@ offset_right = 1600.0
 offset_bottom = 1000.0
 color = Color(0.23137255, 0.23137255, 0.23137255, 1)
 
-[node name="Score" type="Label" parent="."]
+[node name="Label" type="Label" parent="."]
 offset_left = 265.0
 offset_top = 283.0
 offset_right = 559.0
@@ -28,28 +27,7 @@ theme_override_font_sizes/font_size = 100
 text = "replay"
 
 [node name="Addtimer" type="Timer" parent="."]
-wait_time = 0.001
+wait_time = 0.1
 autostart = true
-
-[node name="Grade" type="Label" parent="."]
-visible = false
-offset_left = 1219.0
-offset_top = 236.0
-offset_right = 1351.0
-offset_bottom = 509.0
-theme_override_font_sizes/font_size = 200
-text = "Z"
-
-[node name="Label" type="Label" parent="."]
-offset_left = 399.0
-offset_top = 811.0
-offset_right = 659.0
-offset_bottom = 948.0
-theme_override_font_sizes/font_size = 100
-text = "Press"
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(908, 883)
-texture = ExtResource("2_7ct0a")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
