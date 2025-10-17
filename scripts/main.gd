@@ -186,7 +186,7 @@ func spawnShapes(shapeList):
 			Global.notesOnScreen.append(RigidBody2D.new())
 	
 	for note in Global.notesOnScreen:
-		note.linear_velocity = Vector2(-distance/$Timer.wait_time,0)
+		note.linear_velocity = Vector2(-200,0)
 		
 	inputOn = true
 

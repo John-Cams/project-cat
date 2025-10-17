@@ -32,7 +32,7 @@ func _ready() -> void:
 		grade = "C"
 	elif Global.score > Global.maxScore*0.6:
 		grade = "D"
-	elif Global.score == 0:
+	elif Global.score > 0:
 		grade = "F"
 	else:
 		grade = "Z"
