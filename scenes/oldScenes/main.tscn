@@ -1,15 +1,15 @@
 [gd_scene load_steps=17 format=3 uid="uid://bt0wlqj5k2ae8"]
 
-[ext_resource type="Script" uid="uid://76fuqau8a87i" path="res://scripts/main.gd" id="1_85g3d"]
+[ext_resource type="Script" uid="uid://76fuqau8a87i" path="res://scripts/oldScripts/main.gd" id="1_85g3d"]
 [ext_resource type="Texture2D" uid="uid://c60r5udhngma" path="res://assets/Staff.png" id="2_choun"]
-[ext_resource type="Script" uid="uid://7einrdtvbckr" path="res://scripts/Global.gd" id="2_ya4ey"]
-[ext_resource type="Script" uid="uid://cpxgaxy67ksof" path="res://scripts/staff.gd" id="3_ya4ey"]
+[ext_resource type="Script" uid="uid://7einrdtvbckr" path="res://scripts/oldScripts/Global.gd" id="2_ya4ey"]
+[ext_resource type="Script" uid="uid://cpxgaxy67ksof" path="res://scripts/oldScripts/staff.gd" id="3_ya4ey"]
 [ext_resource type="Texture2D" uid="uid://btt4rot0n4o2k" path="res://assets/Shape.png" id="4_eb6dy"]
 [ext_resource type="Texture2D" uid="uid://ctvrm68tloo0o" path="res://assets/Helper.png" id="5_trceg"]
 [ext_resource type="FontFile" uid="uid://sb6skutmwufe" path="res://assets/Roboto-Regular.ttf" id="6_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://gml7puc4wny3" path="res://assets/happyCat.png" id="9_85g3d"]
-[ext_resource type="PackedScene" uid="uid://r6edhxgequhp" path="res://scenes/note.tscn" id="9_choun"]
-[ext_resource type="Script" uid="uid://dghcjrvuudoy7" path="res://scenes/audio_stream_player.gd" id="10_choun"]
+[ext_resource type="PackedScene" uid="uid://r6edhxgequhp" path="res://scenes/oldScenes/note.tscn" id="9_choun"]
+[ext_resource type="Script" uid="uid://dghcjrvuudoy7" path="res://scenes/oldScenes/audio_stream_player.gd" id="10_choun"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_efxa6"]
 

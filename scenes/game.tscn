@@ -1,0 +1,144 @@
+[gd_scene load_steps=16 format=3 uid="uid://bnayvghrna32q"]
+
+[ext_resource type="Script" uid="uid://dy4c3yx5x4t3f" path="res://game.gd" id="1_lnu2h"]
+[ext_resource type="Texture2D" uid="uid://cjlno3wf883i6" path="res://assets/opaqueGuide.png" id="2_lbhrr"]
+[ext_resource type="Texture2D" uid="uid://c42ehp41fa48v" path="res://assets/translucentGuide.png" id="3_iywne"]
+[ext_resource type="Texture2D" uid="uid://by7cg2bl0ig0o" path="res://assets/happy.png" id="4_iywne"]
+[ext_resource type="PackedScene" uid="uid://ndg5ltaff5gh" path="res://scenes/note.tscn" id="4_lbhrr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
+atlas = ExtResource("2_lbhrr")
+region = Rect2(0, 0, 400, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gee14"]
+atlas = ExtResource("2_lbhrr")
+region = Rect2(0, 100, 400, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0tnpc"]
+atlas = ExtResource("2_lbhrr")
+region = Rect2(0, 200, 400, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtaks"]
+atlas = ExtResource("2_lbhrr")
+region = Rect2(0, 300, 400, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lnu2h"]
+atlas = ExtResource("2_lbhrr")
+region = Rect2(0, 0, 100, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lbhrr"]
+atlas = ExtResource("2_lbhrr")
+region = Rect2(100, 0, 100, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iywne"]
+atlas = ExtResource("2_lbhrr")
+region = Rect2(200, 0, 100, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
+atlas = ExtResource("2_lbhrr")
+region = Rect2(300, 0, 100, 400)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vtaks"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5sy4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gee14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0tnpc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vtaks")
+}],
+"loop": true,
+"name": &"Horiz",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lnu2h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lbhrr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iywne")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p57ef")
+}],
+"loop": true,
+"name": &"Vertic",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p57ef"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_iywne")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_lnu2h")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1600.0
+offset_bottom = 1000.0
+color = Color(0.53333336, 0.53333336, 0.53333336, 1)
+
+[node name="Guide" type="Sprite2D" parent="."]
+position = Vector2(800, 500)
+texture = ExtResource("3_iywne")
+
+[node name="VerticIndicator" type="AnimatedSprite2D" parent="."]
+position = Vector2(650, 500)
+sprite_frames = SubResource("SpriteFrames_vtaks")
+animation = &"Vertic"
+
+[node name="HorizIndicator" type="AnimatedSprite2D" parent="."]
+position = Vector2(800, 350)
+sprite_frames = SubResource("SpriteFrames_vtaks")
+animation = &"Horiz"
+
+[node name="Spawn" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Change" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(750, 650)
+scale = Vector2(5, 5)
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 50
+text = "HELLO"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+sprite_frames = SubResource("SpriteFrames_p57ef")
+
+[node name="Note" parent="." instance=ExtResource("4_lbhrr")]
+visible = false
+
+[node name="Label2" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 100
+text = "Score: 0000"
+
+[connection signal="timeout" from="Spawn" to="." method="_on_spawn_timeout"]
+[connection signal="timeout" from="Change" to="." method="_on_change_timeout"]
