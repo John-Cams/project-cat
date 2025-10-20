@@ -109,7 +109,7 @@ sprite_frames = SubResource("SpriteFrames_vtaks")
 animation = &"Horiz"
 
 [node name="Spawn" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 1.9
 autostart = true
 
 [node name="Change" type="Timer" parent="."]
@@ -134,7 +134,10 @@ sprite_frames = SubResource("SpriteFrames_p57ef")
 [node name="Note" parent="." instance=ExtResource("4_lbhrr")]
 visible = false
 
-[node name="Label2" type="Label" parent="."]
+[node name="Allow" type="Timer" parent="."]
+wait_time = 0.009999999999999998
+
+[node name="Score" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
 theme_override_font_sizes/font_size = 100
@@ -142,3 +145,4 @@ text = "Score: 0000"
 
 [connection signal="timeout" from="Spawn" to="." method="_on_spawn_timeout"]
 [connection signal="timeout" from="Change" to="." method="_on_change_timeout"]
+[connection signal="timeout" from="Allow" to="." method="_on_allow_timeout"]
