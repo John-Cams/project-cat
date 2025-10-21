@@ -113,7 +113,7 @@ animation = &"Horiz"
 autostart = true
 
 [node name="Change" type="Timer" parent="."]
-wait_time = 0.9
+wait_time = 4.0
 autostart = true
 
 [node name="Node2D" type="Node2D" parent="."]

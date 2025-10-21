@@ -8,3 +8,9 @@ var clones = []
  
 @export var scorePos: Vector2
 @export var inputs: Array
+
+func desiredInput() -> int:
+	if direction.x == 0:
+		return inputs[1]
+	else:
+		return inputs[0]

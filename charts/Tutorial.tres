@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Chart" load_steps=2 format=3 uid="uid://cj7keb2yjwa46"]
+
+[ext_resource type="Script" uid="uid://dw0vneuvvem0g" path="res://resources/RChart.gd" id="1_7p6ku"]
+
+[resource]
+script = ExtResource("1_7p6ku")
+BPM = 140
+noteQueue = Array[int]([0, 5, 10, 15, 0, 5, 10, 15])
+timerChanges = Array[int]([8, 560])
+metadata/_custom_type_script = "uid://dw0vneuvvem0g"

@@ -14,6 +14,18 @@ var isReady = false
 var score = 0
 ##Allow inputs
 var allowInputs = true
+##Current note
+var currentNote = 0
+##Note list spawn
+var noteList = [[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],]
+##Wait time
+var spawnTime = (60.0/140.0)
+##Triggers once the music 
+var firstTime = false
+
+var chart = preload("res://charts/Tutorial.tres")
+
+var izHorz = false
 
 ##List of notes that need to be hit
 var queue = []
@@ -47,43 +59,39 @@ func _process(delta: float) -> void:
 		[$HorizIndicator,$VerticIndicator][int(!isShape)].visible = false
 	
 	if !notes.is_empty():
-		if(inputPressed):
-			pauseInputs()
-			var condHorz = (inputName == notes[notes.size()-1].inputs[0]) and (notes[notes.size()-1].direction.x==0)
-			var condVert = (inputName == notes[notes.size()-1].inputs[1]) and (notes[notes.size()-1].direction.y==0)
-			if(condHorz or condVert):
-				if abs(notes[notes.size()-1].scorePos.x - notes[notes.size()-1].position.x) <= 50 and abs(notes[notes.size()-1].scorePos.y - notes[notes.size()-1].position.y) <= 50:
-					changeScore(100 * (50-(abs(notes[notes.size()-1].scorePos.x - notes[notes.size()-1].position.x)+abs(notes[notes.size()-1].scorePos.y - notes[notes.size()-1].position.y)) ) )
-					print(abs(notes[notes.size()-1].scorePos.x - notes[notes.size()-1].position.x))
-					print(abs(notes[notes.size()-1].scorePos.y - notes[notes.size()-1].position.y))
-					notes[notes.size()-1].visible = false
 		isShape = (notes[notes.size()-1].direction.y==0)
 		for i in notes:
 			var move = i.direction*500*delta
 			i.position += move
-	print(allowInputs)
-		
+			
+			#If note input pressed and note is close kill note
+			if(inputPressed):
+				if(inputName == i.desiredInput()):
+					if abs(i.scorePos.x - i.position.x) <= 50 and (i.scorePos.y - i.position.y) <= 50:
+						changeScore(100 * (50- ((abs(i.scorePos.x) - i.position.x)+(abs(i.scorePos.y) - i.position.y))))
+						i.visible = false
+			
+
 
 func changeScore(change: int):
 	score += change
 	$Score.text = "Score: " + str(score)
-		
+	
 func _ready() -> void:
 	isReady = true
+	$Spawn.wait_time = spawnTime
 	
 func pauseInputs():
 	allowInputs = false
 	$Allow.start()
 
-func createNote(row: int, col: int):
+func createNote(row: int, col: int, isLeftTop: bool, isHorz: bool):
 	
 	var newNote = NOTE.instantiate() 
 	newNote.frame = (row*4+col)
 	newNote.visible = true
 	queue.append(newNote)
 	add_child(newNote)
-	var isLeftTop = (randi_range(0,1)==0)
-	var isHorz = (randi_range(0,1)==0) 
 	
 	# -100, 650+(col*100), 1700
 	# -100. 350+(row*100), 1100
@@ -121,9 +129,18 @@ func createNote(row: int, col: int):
 	notes.append(newNote)
 
 func _on_spawn_timeout() -> void:
-	if isReady:
-		createNote(randi_range(0,3),randi_range(0,3))
+	if isReady and currentNote!=noteList.size():
+		if !firstTime:
+			$SongPlayer.play()
+			firstTime = true
+		createNote(chart.noteQueue[currentNote]%4,chart.noteQueue[currentNote]/4, true, izHorz)
+		if (currentNote!=chart.noteQueue.size()-1):
+			currentNote += 1
+		else:
+			currentNote = 0
 
+func _on_change_timeout() -> void:
+	izHorz = !izHorz
 
 func _on_allow_timeout() -> void:
 	allowInputs = true
