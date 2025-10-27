@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.5", "GL Compatibility")
 boot_splash/image="uid://cjlno3wf883i6"
 config/icon="res://icon.svg"
 
+[autoload]
+
+CamControl="*res://scripts/cam_control.gd"
+
 [display]
 
 window/size/viewport_width=1600

@@ -23,7 +23,7 @@ var spawnTime = (60.0/140.0)
 ##Triggers once the music 
 var firstTime = false
 
-var chart = preload("res://charts/Tutorial.tres")
+var chart = preload("res://charts/Song 1.tres")
 
 var izHorz = false
 
