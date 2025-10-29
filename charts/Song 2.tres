@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Chart" load_steps=3 format=3 uid="uid://ttow61gvnxub"]
+[gd_resource type="Resource" script_class="Chart" load_steps=3 format=3 uid="uid://cm7xfk5uwui80"]
 
 [ext_resource type="Texture2D" uid="uid://by7cg2bl0ig0o" path="res://assets/happy.png" id="1_5qnex"]
 [ext_resource type="Script" uid="uid://dw0vneuvvem0g" path="res://resources/RChart.gd" id="1_7p6ku"]
@@ -7,7 +7,7 @@
 script = ExtResource("1_7p6ku")
 name = "Song 2"
 BPM = 140
-noteQueue = Array[int]([0, 5, 10, 15, 0, 5, 10, 15])
-timerChanges = Array[int]([8, 560])
+noteQueue = Array[int]([0, 5, 10, 15, 0, 5, 10])
+direction = Array[int]([1, 1, 1, 1, 2, 2, 2, 2])
 albumCover = ExtResource("1_5qnex")
 metadata/_custom_type_script = "uid://dw0vneuvvem0g"

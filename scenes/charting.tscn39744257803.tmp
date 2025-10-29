@@ -247,27 +247,7 @@ text = "Down"
 position = Vector2(0, 2000)
 script = ExtResource("8_injk5")
 
-[node name="NotePicker" type="Node2D" parent="ChartEditor"]
-z_index = 2
-
-[node name="Background" type="ColorRect" parent="ChartEditor/NotePicker"]
-offset_right = 400.0
-offset_bottom = 400.0
-color = Color(0.51819235, 0.5850227, 0.61618817, 1)
-
-[node name="Notes" type="Sprite2D" parent="ChartEditor/NotePicker"]
-position = Vector2(200, 200)
-texture = ExtResource("9_injk5")
-
-[node name="Control" type="Control" parent="ChartEditor/NotePicker"]
-z_index = 1
-layout_mode = 3
-anchors_preset = 0
-offset_right = 400.0
-offset_bottom = 400.0
-
 [node name="NoteBlock" type="Node2D" parent="ChartEditor"]
-z_index = 1
 position = Vector2(197, 350)
 
 [node name="BGNumber" type="ColorRect" parent="ChartEditor/NoteBlock"]
@@ -311,7 +291,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="NoteBTN" type="Button" parent="ChartEditor/NoteBlock"]
+[node name="Button2" type="Button" parent="ChartEditor/NoteBlock"]
 offset_top = 100.0
 offset_right = 100.0
 offset_bottom = 200.0
@@ -320,7 +300,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_injk5")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_f82x2")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_30inh")
 
-[node name="DirBTN" type="Button" parent="ChartEditor/NoteBlock"]
+[node name="Button3" type="Button" parent="ChartEditor/NoteBlock"]
 offset_top = 200.0
 offset_right = 100.0
 offset_bottom = 300.0
@@ -328,6 +308,23 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_umwmv")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_injk5")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_f82x2")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_30inh")
+
+[node name="NotePicker" type="Node2D" parent="ChartEditor"]
+
+[node name="Background" type="ColorRect" parent="ChartEditor/NotePicker"]
+offset_right = 400.0
+offset_bottom = 400.0
+color = Color(0.51819235, 0.5850227, 0.61618817, 1)
+
+[node name="Notes" type="Sprite2D" parent="ChartEditor/NotePicker"]
+position = Vector2(200, 200)
+texture = ExtResource("9_injk5")
+
+[node name="Control" type="Control" parent="ChartEditor/NotePicker"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 400.0
 
 [node name="Button" type="Button" parent="ChartEditor"]
 offset_left = 750.0

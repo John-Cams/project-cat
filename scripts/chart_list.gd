@@ -1,11 +1,16 @@
 extends Node2D
 
+signal changeSong(song:int)
+
 var listOfSongs = []
 var chartList = []
 var yPosList = [195,295,425,585,715]
 var scaleList = [0.6,0.8,1,0.8,0.6]
 var currentIndex = -3
-
+var desPos = []
+var posInc = []
+var desSize = []
+var sizeInc = []
 
 func _ready() -> void:
 	var dir := DirAccess.open("res://charts")
@@ -50,13 +55,16 @@ func updateChartList(up: bool):
 		return
 	
 	currentIndex += 1 if up else -1
-	
+	desPos = []
+	posInc = []
+	desSize = []
+	sizeInc = []
 	for i in chartList.size():
 		if i >= currentIndex and i <= currentIndex + 4:
 			var offset = i - currentIndex
 			chartList[i].visible = true
-			chartList[i].position = Vector2(300, yPosList[offset])
-			chartList[i].scale = Vector2(scaleList[offset], scaleList[offset])
+			chartList[i].position = (Vector2(300, yPosList[offset]))
+			chartList[i].scale = (Vector2(scaleList[offset], scaleList[offset]))
 		else:
 			chartList[i].visible = false
 			
@@ -67,7 +75,8 @@ func _on_bottom_button_pressed() -> void:
 	updateChartList(true)
 
 func _on_edit_chart_pressed() -> void:
-	print(currentIndex+2)
+	emit_signal("changeSong", currentIndex+2)
+	CamControl.currentScreen = 2
 
 
 func _on_play_chart_pressed() -> void:
