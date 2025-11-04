@@ -7,7 +7,7 @@
 script = ExtResource("1_7p6ku")
 name = "Song 1"
 BPM = 140
-noteQueue = Array[int]([0, 0, 0, 0, 0, 0, 0, 0])
-direction = Array[int]([1, 1, 1, 1, 2, 2, 2, 2])
+noteQueue = Array[int]([0, 1, 2, 3])
+direction = Array[int]([0, 1, 2, 3])
 albumCover = ExtResource("1_5qnex")
 metadata/_custom_type_script = "uid://dw0vneuvvem0g"

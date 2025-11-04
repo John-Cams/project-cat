@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://g75bwow0vv1t"]
+
+[ext_resource type="Script" uid="uid://e7yqy3w3j86m" path="res://scenes/node.gd" id="1_ignic"]
+
+[node name="Home" type="Node"]
+script = ExtResource("1_ignic")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1600.0
+offset_bottom = 1000.0
+color = Color(0.67370594, 0.81833565, 0.8846525, 1)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 460.0
+offset_top = 143.0
+offset_right = 1099.0
+offset_bottom = 280.0
+theme_override_font_sizes/font_size = 100
+text = "PROJECT_CAT"
+
+[node name="Button" type="Button" parent="."]
+offset_left = 500.0
+offset_top = 450.0
+offset_right = 1000.0
+offset_bottom = 650.0
+text = "Play"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

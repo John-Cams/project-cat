@@ -17,7 +17,7 @@ var allowInputs = true
 ##Current note
 var currentNote = 0
 ##Note list spawn
-var noteList = [[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],[0,0],[1,1],[2,2],[3,3],]
+var noteList = [[0,0]]
 ##Wait time
 var spawnTime = (60.0/140.0)
 ##Triggers once the music 
@@ -68,9 +68,9 @@ func _process(delta: float) -> void:
 			if(inputPressed):
 				if(inputName == i.desiredInput()):
 					if abs(i.scorePos.x - i.position.x) <= 50 and (i.scorePos.y - i.position.y) <= 50:
+						print(i.scorePos)
 						changeScore(100 * (50- ((abs(i.scorePos.x) - i.position.x)+(abs(i.scorePos.y) - i.position.y))))
 						i.visible = false
-			
 
 
 func changeScore(change: int):
@@ -80,6 +80,10 @@ func changeScore(change: int):
 func _ready() -> void:
 	isReady = true
 	$Spawn.wait_time = spawnTime
+	for i in chart.noteQueue.size():
+		noteList.append([chart.noteQueue[i],chart.direction[i]])
+	noteList = chart.noteQueue
+	
 	
 func pauseInputs():
 	allowInputs = false
@@ -87,11 +91,19 @@ func pauseInputs():
 
 func createNote(row: int, col: int, isLeftTop: bool, isHorz: bool):
 	
+	isLeftTop = randi_range(0,4)
+	isHorz = randi_range(0,4)
+	row = randi_range(0,4)
+	col = randi_range(0,4)
 	var newNote = NOTE.instantiate() 
 	newNote.frame = (row*4+col)
 	newNote.visible = true
 	queue.append(newNote)
 	add_child(newNote)
+	
+	
+	isLeftTop = chart.direction[currentNote] != 2 and chart.direction[currentNote] != 3
+	isHorz = chart.direction[currentNote]%2 == 1
 	
 	# -100, 650+(col*100), 1700
 	# -100. 350+(row*100), 1100
@@ -138,9 +150,6 @@ func _on_spawn_timeout() -> void:
 			currentNote += 1
 		else:
 			currentNote = 0
-
-func _on_change_timeout() -> void:
-	izHorz = !izHorz
 
 func _on_allow_timeout() -> void:
 	allowInputs = true
